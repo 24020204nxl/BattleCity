@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="jhjhhjh" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/jhjhhjh" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/jhjhhjh" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename=".gitattributes">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename=".gitignore">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="BattleCity.layout">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="BattleCity.workspace.layout">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="README.md">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="SDL2.dll">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="SDL2_image.dll">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="assets.png">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="bullets.cpp" />
+		<Unit filename="bullets.h" />
+		<Unit filename="checkvar.c">
+			<Option compilerVar="CC" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="constants.h" />
+		<Unit filename="game.cpp" />
+		<Unit filename="game.h" />
+		<Unit filename="jhjhhjh.cbp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="jhjhhjh.depend">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="jhjhhjh.layout">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="main.cpp" />
+		<Unit filename="tank.cpp" />
+		<Unit filename="tank.h" />
+		<Unit filename="wall.cpp" />
+		<Unit filename="wall.h" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

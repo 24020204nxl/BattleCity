@@ -4,3 +4,53 @@
 	<SDL.h>
 	<SDL_image.h>
 
+1742361410 source:e:\battlecity\bullets.cpp
+	"bullets.h"
+
+1742361410 e:\battlecity\bullets.h
+	"constants.h"
+
+1742396655 e:\battlecity\constants.h
+	<SDL.h>
+	<SDL_image.h>
+	<iostream>
+	<algorithm>
+	<string>
+
+1742395510 source:e:\battlecity\game.cpp
+	"game.h"
+	<iostream>
+
+1742395028 e:\battlecity\game.h
+	<vector>
+	<SDL.h>
+	<fstream>
+	<iostream>
+	<string>
+	"constants.h"
+	"wall.h"
+	"tank.h"
+	"bullets.h"
+
+1742361410 e:\battlecity\wall.h
+	<SDL.h>
+
+1742361410 e:\battlecity\tank.h
+	<vector>
+	"wall.h"
+	"constants.h"
+	"bullets.h"
+
+1742395511 source:e:\battlecity\main.cpp
+	<sdl.h>
+	<iostream>
+	"game.h"
+	<SDL_image.h>
+
+1742361410 source:e:\battlecity\tank.cpp
+	"tank.h"
+
+1742361410 source:e:\battlecity\wall.cpp
+	"wall.h"
+	"game.h"
+
