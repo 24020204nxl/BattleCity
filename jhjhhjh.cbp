@@ -56,6 +56,12 @@
 		<Unit filename="assets.png">
 			<Option target="Release" />
 		</Unit>
+		<Unit filename="audio.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="audio.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="bullets.cpp" />
 		<Unit filename="bullets.h" />
 		<Unit filename="checkvar.c">
