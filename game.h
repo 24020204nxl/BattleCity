@@ -33,7 +33,7 @@ public:
     vector<EnemyTank> enemies;
     PlayerTank player;
     PlayerTank player2;
-    Boss boss=Boss(((MAP_WIDTH) / 2) * TITLE_SIZE,TITLE_SIZE);
+    Boss boss=Boss(((MAP_WIDTH-12)) * TITLE_SIZE,TITLE_SIZE);
     int enemynumber=1;
     Mix_Music* prevMusic = nullptr;
     Game();

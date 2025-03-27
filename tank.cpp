@@ -191,7 +191,7 @@ Boss::Boss(int _x, int _y):lazer(_x + 160 / 2 - 20, _y + 125){
     y=_y;
     health = 5;
     currentFrame = 0;
-    animationSpeed = 10;
+    animationSpeed = 50;
     frameCount = 1;
     atkType = IDLE;
     shootDelay=5;
@@ -204,7 +204,7 @@ Boss::Boss(int _x, int _y):lazer(_x + 160 / 2 - 20, _y + 125){
 
 void Boss::loadFrames(SDL_Renderer* renderer) {
     for (int i = 0; i < 8; i++) {
-        string filename = "BossAssets/" + std::to_string(i) + ".jpg";
+        string filename = "BossAssets/" + std::to_string(i) + ".png";
         bossFrames[i] = IMG_LoadTexture(renderer, filename.c_str());
         if (!bossFrames[i]) {
             std::cerr << "Failed to load " << filename << " - " << IMG_GetError() << std::endl;
@@ -260,7 +260,6 @@ void Boss::updateAnimation() {
         if (currentFrame == 0) {
             atkType = IDLE;
             frameCount = 1;
-            animationSpeed = 25;
             lazer.deactivate();
         }
     }
@@ -288,7 +287,7 @@ void Boss::shootLazer(){
     currentFrame=4;
     frameCount=7;
     animationSpeed=10;
-    lazer.activate(x,y);
+    lazer.activate(x+30,y);
 }
 
 void Boss::updateBullets(const vector<Wall>&walls,const PlayerTank &player,const PlayerTank &player2){

@@ -18,11 +18,11 @@
 	<SDL_mixer.h>
 	<string>
 
-1742987918 source:e:\battlecity\game.cpp
+1743066185 source:e:\battlecity\game.cpp
 	"game.h"
 	<iostream>
 
-1742980312 e:\battlecity\game.h
+1743064428 e:\battlecity\game.h
 	<vector>
 	<SDL.h>
 	<fstream>
@@ -50,7 +50,7 @@
 	"game.h"
 	<SDL_image.h>
 
-1742980312 source:e:\battlecity\tank.cpp
+1743065788 source:e:\battlecity\tank.cpp
 	"tank.h"
 
 1742980312 source:e:\battlecity\wall.cpp

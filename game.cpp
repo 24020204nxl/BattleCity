@@ -427,12 +427,21 @@ void Game::loadLevel(int level){
     generateWall(mapFile);
     spawnEnemyTank();
     player2.active = (prevState == MULTIPLAYER);
-    player=PlayerTank(((MAP_WIDTH-1)/2)*TITLE_SIZE,(MAP_HEIGHT-2)*TITLE_SIZE);
+    if(currentLevel==3){
+        player=PlayerTank((MAP_WIDTH-18)*TITLE_SIZE,(MAP_HEIGHT-2)*TITLE_SIZE);
+        player.active=true;
+        if(player2.active){
+            player2 = PlayerTank((MAP_WIDTH-17)*TITLE_SIZE, (MAP_HEIGHT-2)*TITLE_SIZE);
+            player2.active=true;
+        }
+    }
+    else {
+            player=PlayerTank(((MAP_WIDTH-1)/2)*TITLE_SIZE,(MAP_HEIGHT-2)*TITLE_SIZE);
     player.active=true;
     if(player2.active){
         player2 = PlayerTank(((MAP_WIDTH-3)/2)*TITLE_SIZE, (MAP_HEIGHT-2)*TITLE_SIZE);
         player2.active=true;
-    }
+    }}
     if(currentLevel==1) playMusic(level1Music);
     else if(currentLevel==2) {
             playMusic(level2Music);
@@ -485,7 +494,12 @@ void Game::spawnEnemyTank(){
         while(!validPos){
             ex=(rand()%(MAP_WIDTH/2-2)+1)*TITLE_SIZE;
             ey=(rand()%(MAP_HEIGHT/2-2)+1)*TITLE_SIZE;
-            validPos=true;
+            if(currentLevel==3){
+                if(ex<280||ex>520){
+                    validPos=true;
+                }
+            }
+            else validPos=true;
             for(const auto &Wall:walls){
                 if(Wall.active&&Wall.x==ex&&Wall.y==ey){
                     validPos=false;
