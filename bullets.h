@@ -33,6 +33,10 @@ public:
     void activate(int _x,int _y) {
         x=_x;
         y=_y;
+        rect.x=_x;
+        rect.y=_y;
+        rect.w=60;
+        rect.h=400;
         active = true;
     }
     void deactivate() {
