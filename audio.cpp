@@ -18,7 +18,7 @@ Mix_Chunk* enemyShootSound=nullptr;
 Mix_Chunk* explosionSound = nullptr;
 Mix_Chunk* lazerSound = nullptr;
 Mix_Chunk* bossDeathSound = nullptr;
-
+//Ham load am thanh tu file
 void loadAudio() {
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
@@ -42,19 +42,19 @@ void loadAudio() {
     if (!menuMusic || !level1Music || !level2Music || !bossMusic ||
         !shootSound || !explosionSound || !lazerSound ||
         !winSound || !loseSound) {
-        std::cerr << "Failed to load sound files! Mix_Error: " << Mix_GetError() << std::endl;
+        std::cerr << "Failed to load sound files! Mix_Error: " << Mix_GetError() << std::endl; // Bao loi
     }
 }
-
+//Ham choi nhac
 void playMusic(Mix_Music* music) {
-    Mix_HaltMusic();
+    Mix_HaltMusic();//Huy nhac truoc do neu co
     if (music) {
         currentMusic=music;
         Mix_PlayMusic(music, -1);
         Mix_VolumeMusic(30);
     }
 }
-
+//Ham giai phong nhac khi choi xong
 void freeAudio() {
     Mix_FreeMusic(menuMusic);
     Mix_FreeMusic(level1Music);

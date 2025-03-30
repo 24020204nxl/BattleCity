@@ -10,6 +10,7 @@ Bullets::Bullets(int startX,int startY,Direction directionX){
     rect={x,y,10,10};
 }
 void Bullets::move(){
+    //Van toc dan voi huong co dinh
     switch (direction) {
         case UP:    y -= 15; break;
         case DOWN:  y += 15; break;
@@ -18,6 +19,7 @@ void Bullets::move(){
     }
     rect.x=x;
     rect.y=y;
+    //Neu dan bay ra ngoai man hinh
     if(x<TITLE_SIZE||x>SCREEN_WIDTH-TITLE_SIZE||y>SCREEN_HEIGHT-TITLE_SIZE||y<TITLE_SIZE){
         active=false;
     }
@@ -36,7 +38,7 @@ Lazer::Lazer(int startX, int startY) : currentFrame(0), frameCount(4), animation
     rect.w = 60;
     rect.h = 400;
 }
-
+//Ham chay cac khung hinh lazer tu file
 void Lazer::loadFrames(SDL_Renderer* renderer) {
     for (int i = 0; i < 4; i++) {
         std::string filename = "lazer/" + std::to_string(i) + ".png";
@@ -46,16 +48,15 @@ void Lazer::loadFrames(SDL_Renderer* renderer) {
         }
     }
 }
-
 void Lazer::update() {
     static int frameCounter = 0;
     frameCounter++;
-    if (frameCounter >= animationSpeed) {
-        frameCounter = 0;
+    if (frameCounter >= animationSpeed) { //Toc do hoat anh Lazer
+        frameCounter = 0; //Reset hoat anh ve ban dau
         currentFrame = (currentFrame + 1) % frameCount;
 
         if(currentFrame>=1){
-            canCollide=true;
+            canCollide=true; //Chi gay sat thuong khi chay 1 khung hinh
         }
 
         if (currentFrame >= frameCount) {
@@ -76,7 +77,7 @@ void Lazer::render(SDL_Renderer* renderer) {
 
 }
 
-
+//Ham huy lazer
 Lazer::~Lazer() {
     for (int i = 0; i < 4; i++) {
         if (lazerFrames[i]) {

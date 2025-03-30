@@ -27,44 +27,36 @@ void PlayerTank::setSpriteSheet(SDL_Texture* sheet,SDL_Rect source){
     scrRect=source;
 }
 void PlayerTank::move(int dx,int dy,const vector<Wall>&walls,const vector<EnemyTank>enemies){
+    //Quyet dinh huong di cua xe tank dua vao dx dy
     if(dx>0) direction=LEFT;
     else if(dx<0) direction=RIGHT;
     else if(dy>0) direction=DOWN;
     else direction=UP;
+    //di chuyen theo dx dy nhap tu ban phim
     int newX=x+dx;
     int newY=y+dy;
     this->dirX=dx;
     this->dirY=dy;
     SDL_Rect newRect={newX,newY,TITLE_SIZE,TITLE_SIZE};
     for(int i=0;i<walls.size();i++){
-        if(walls[i].active&&walls[i].type!=BUSH&&SDL_HasIntersection(&newRect,&walls[i].rect)){
+        if(walls[i].active&&walls[i].type!=BUSH&&SDL_HasIntersection(&newRect,&walls[i].rect)){ //Xac dinh va cham voi tuong
             return;
         }
     }
-    if(newX>=TITLE_SIZE&&newX<=SCREEN_WIDTH-TITLE_SIZE*2
-       &&newY>=TITLE_SIZE&&newY<=SCREEN_HEIGHT-TITLE_SIZE*2){
+    if(newX>=TITLE_SIZE&&newX<=SCREEN_WIDTH-TITLE_SIZE*2&&newY>=TITLE_SIZE&&newY<=SCREEN_HEIGHT-TITLE_SIZE*2){ // chi di chuyen khi o trong man hinh
         x=newX;
         y=newY;
         rect.x=x;
         rect.y=y;
        }
-    inBush=false;
-    for(auto &Wall:walls){
-        if(Wall.active&&Wall.type==BUSH&&SDL_HasIntersection(&newRect,&Wall.rect)){
-            inBush=true;
-            break;
-        }
-    }
 }
 void PlayerTank::shoot(){
     if(ShootDelay>0) return;
     Mix_PlayChannel(-1,shootSound,0);
     ShootDelay=20;
     bullets.push_back(Bullets(x+TITLE_SIZE/2-5,y+TITLE_SIZE/2-5,
-                              this->direction));
+                              this->direction)); //Khoi tao dan vao vector
 }
-
-
 void PlayerTank::updateBullets(const vector<Wall> &walls){
     for(auto &Bullets:bullets){
         Bullets.move();
@@ -76,7 +68,7 @@ void PlayerTank::updateBullets(const vector<Wall> &walls){
             }
         }
     }
-    bullets.erase(remove_if(bullets.begin(),bullets.end(),[](Bullets &b){return !b.active;}),bullets.end());
+    bullets.erase(remove_if(bullets.begin(),bullets.end(),[](Bullets &b){return !b.active;}),bullets.end()); //Xoa dan neu khong con hoat dong
 }
 
 EnemyTank::EnemyTank(int startX,int startY){
@@ -91,9 +83,9 @@ EnemyTank::EnemyTank(int startX,int startY){
     active=true;
 }
 void EnemyTank::move(const vector<Wall>&walls,const vector<EnemyTank>enemies,PlayerTank &player,PlayerTank &player2){
-    if(--moveDelay>0) return;
+    if(--moveDelay>0) return; //Chi di chuyen khi het thoi gian cho
     moveDelay=10;
-    if(randomMoveTimer>0){
+    if(randomMoveTimer>0){ //Chi doi huong ngau nhien khi het thoi gian cho
         randomMoveTimer--;
     }
     else{
@@ -113,10 +105,7 @@ void EnemyTank::move(const vector<Wall>&walls,const vector<EnemyTank>enemies,Pla
         }
     }
 
-    if(SDL_HasIntersection(&this->rect,&player.rect)){
-       return;
-       }
-    if(SDL_HasIntersection(&this->rect,&player2.rect)){
+    if(SDL_HasIntersection(&this->rect,&player.rect)||SDL_HasIntersection(&this->rect,&player2.rect)){
        return;
        }
     if(newX>=TITLE_SIZE&&newX<=SCREEN_WIDTH-TITLE_SIZE*2&&
@@ -127,16 +116,17 @@ void EnemyTank::move(const vector<Wall>&walls,const vector<EnemyTank>enemies,Pla
         rect.y=y;
     }
 }
+//Ham doi huong ngau nhien
 void EnemyTank::randomDirection(int screenheight){
     int ranDir= rand()%100;
-    if(y<screenheight/2){
+    if(y<screenheight/2){ //Neu o nua tren man hinh thi di chuyen xuong nhieu hon
         if(ranDir<50){dirX=0;dirY=10;}
         else if(ranDir<70){dirX=-10;dirY=0;}
         else if(ranDir<90) {dirX=10;dirY=0;}
         else {dirX=0;dirY=-10;}
     }
     else{
-        switch(rand()%4){
+        switch(rand()%4){ //neu ow nua duoi thi 4 huong nhu nhau
             case 0:dirX=10;dirY=0;break;
             case 1:dirX=-10;dirY=0;break;
             case 2:dirX=0;dirY=10;break;
@@ -186,7 +176,7 @@ void EnemyTank::setSpriteSheet(SDL_Texture* sheet,SDL_Rect source){
     scrRect=source;
 }
 
-Boss::Boss(int _x, int _y):lazer(_x + 160 / 2 - 20, _y + 125){
+Boss::Boss(int _x, int _y):lazer(0,0){
     x=_x;
     y=_y;
     health = 5;
@@ -204,26 +194,25 @@ Boss::Boss(int _x, int _y):lazer(_x + 160 / 2 - 20, _y + 125){
 
 void Boss::loadFrames(SDL_Renderer* renderer) {
     for (int i = 0; i < 8; i++) {
-        string filename = "BossAssets/" + std::to_string(i) + ".png";
+        string filename = "BossAssets/" + std::to_string(i) + ".png"; //Tai hinh anh boss file
         bossFrames[i] = IMG_LoadTexture(renderer, filename.c_str());
         if (!bossFrames[i]) {
-            std::cerr << "Failed to load " << filename << " - " << IMG_GetError() << std::endl;
+            std::cerr << "Failed to load " << filename << " - " << IMG_GetError() << std::endl; //bao loi
         }
     }
 }
 
 void Boss::loadExplosionTexture(SDL_Renderer* renderer) {
-    string filename="BossAssets/Explosion.png";
+    string filename="BossAssets/Explosion.png"; //Tai hoat anh no boss tu file
     explosionTexture = IMG_LoadTexture(renderer, filename.c_str( ));
-    cout<<"loaded!"<<endl;
     if (!explosionTexture) {
-        std::cerr << "Failed to load boss explosion spritesheet! " << IMG_GetError() << std::endl;
+        std::cerr << "Failed to load boss explosion spritesheet! " << IMG_GetError() << std::endl; //Bao loi
     }
 }
 
 
 void Boss::render(SDL_Renderer* renderer) {
-    if (explosionFrame >= 0 && explosionTexture) {
+    if (explosionFrame >= 0 && explosionTexture) { //Khi trong thai phat no
         SDL_Rect explosionSrc = { explosionFrame * 96, 0, 96, 96 };
         SDL_Rect explosionDest = { x, y, 160, 160 };
         SDL_RenderCopy(renderer, explosionTexture, &explosionSrc, &explosionDest);
@@ -242,11 +231,11 @@ void Boss::render(SDL_Renderer* renderer) {
 }
 
 void Boss::updateAnimation() {
-    if (explosionFrame >= 0) {
+    if (explosionFrame >= 0) { //Khi dc ve 0 thif bj phat no
         if (++explosionCounter >= explosionSpeed) {
             explosionFrame++;
             explosionCounter = 0;
-            if (explosionFrame >= 11) {
+            if (explosionFrame >= 11) { //Khi no xong
                 explosionFrame = -1;
             }
         }
@@ -258,9 +247,9 @@ void Boss::updateAnimation() {
         frameCounter = 0;
 
         if (currentFrame == 0) {
-            atkType = IDLE;
+            atkType = IDLE; //Dung yen
             frameCount = 1;
-            lazer.deactivate();
+            lazer.deactivate(); //Tat lazer
         }
     }
     if(lazer.active){
@@ -306,7 +295,7 @@ void Boss::updateBullets(const vector<Wall>&walls,const PlayerTank &player,const
 
 
 Boss::~Boss(){
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 8; i++) {
         if (bossFrames[i]) {
             SDL_DestroyTexture(bossFrames[i]);
         }

@@ -11,7 +11,7 @@
 #include "bullets.h"
 #include "audio.h"
 using namespace std;
-enum GameState {MENU, SINGLEPLAYER, MULTIPLAYER, PAUSE, LOADSCREEN, VICTORY, LOSS, EXIT};
+enum GameState {MENU, SINGLEPLAYER, MULTIPLAYER, PAUSE, LOADSCREEN, VICTORY, LOSS, EXIT}; //trang thai gane
 class Game{
 public:
     SDL_Window* window;
@@ -20,8 +20,8 @@ public:
     SDL_Renderer* renderer;
     SDL_Texture* spritesheet;
     SDL_Texture* loadTexture(const string &path);
-    GameState gstate=MENU;
-    GameState prevState;
+    GameState gstate=MENU; //Luu trang thai hien tai
+    GameState prevState; //Luu trang thai truoc do
     int menuSelection=0;
     int loadScreenSelection=0;
     int currentLevel=1;

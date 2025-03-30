@@ -1,7 +1,7 @@
 #ifndef WALL_H_INCLUDED
 #define WALL_H_INCLUDED
 #include <SDL.h>
-enum WallType{BRICK,STEEL,BUSH};
+enum WallType{BRICK,STEEL,BUSH}; //Cac loai tuong
 class Wall{
 public:
     int x,y;
@@ -13,7 +13,7 @@ public:
     Wall(int startX, int startY, WallType Thetype);
     WallType getType();
     void render(SDL_Renderer* renderer);
-    void setSpriteSheet(SDL_Texture* sheet,SDL_Rect source);
+    void setSpriteSheet(SDL_Texture* sheet,SDL_Rect source); //Lay toa do anh tu file
 };
 
 #endif // WALL_H_INCLUDED

@@ -2,38 +2,38 @@
 #include <iostream>
 
 Game::Game() {
-    std::cerr << "Initializing SDL..." << std::endl;
+    std::cerr << "Initializing SDL..." << std::endl; //Thong bao khoi tao SDL
     running = true;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+        std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl; //Loi khong the khoi dong
         running = false;
         return;
     }
 
-    std::cerr << "Creating window..." << std::endl;
+    std::cerr << "Creating window..." << std::endl; //Thong bao tao cua so
     window = SDL_CreateWindow("Battle City",
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window) {
-        std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl; //Thong bao loi khong the tao cua so
         running = false;
         return;
     }
 
-    std::cerr << "Creating renderer..." << std::endl;
+    std::cerr << "Creating renderer..." << std::endl; //Tao do hoa
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer) {
-        std::cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        std::cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl; //Loi khong the tao do hoa
         running = false;
         return;
     }
     loadAudio();
     playMusic(menuMusic);
-    spritesheet=loadTexture("assets.png");
-    std::cerr << "Initialization complete!" << std::endl;
+    spritesheet=loadTexture("assets.png"); //Load anh tu file
+    std::cerr << "Initialization complete!" << std::endl; //Khoi tao thanh cong
 }
-
+//Lenh load anh
 SDL_Texture* Game::loadTexture(const string &path){
     SDL_Surface* tempSurface = IMG_Load(path.c_str());
     if(!tempSurface){
@@ -41,10 +41,10 @@ SDL_Texture* Game::loadTexture(const string &path){
         return nullptr;
     }
     SDL_Texture* texture=SDL_CreateTextureFromSurface(renderer,tempSurface);
-    SDL_FreeSurface(tempSurface);
+    SDL_FreeSurface(tempSurface); //Giai phong bo nho
     return texture;
 }
-
+//Ham xu ly su kien
 void Game::handleEvent(){
     SDL_Event event;
     while(SDL_PollEvent(&event)){
@@ -65,6 +65,7 @@ void Game::handleEvent(){
                 }
             }
             if(gstate==SINGLEPLAYER||gstate==MULTIPLAYER){
+                    //di chuyen bang cac nut tu ban phim
                 switch(event.key.keysym.sym){
                     case SDLK_UP:player.move(0,-10,walls,enemies);break;
                     case SDLK_DOWN:player.move(0,10,walls,enemies);break;
@@ -82,7 +83,7 @@ void Game::handleEvent(){
     }
 
 }
-
+//Ham xu ly khi chon load game
 void Game::handleLoadEvent() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -103,14 +104,14 @@ void Game::handleLoadEvent() {
                     } else {
                         currentLevel = 1;
                         loadLevel(currentLevel);
-                        gstate = (menuSelection == 0) ? SINGLEPLAYER : MULTIPLAYER;
+                        gstate = (menuSelection == 0) ? SINGLEPLAYER : MULTIPLAYER;//Tao man choi moi dua vao che do da chon
                     }
                     break;
             }
         }
     }
 }
-
+//Ham ve man hinh loadgame
 void Game::renderLoad(int loadSCreenSelection){
     string loadscr="load/";
     SDL_Texture* loadTexture=IMG_LoadTexture(renderer,(loadscr+to_string(loadSCreenSelection)+".jpg").c_str());
@@ -124,7 +125,7 @@ void Game::renderLoad(int loadSCreenSelection){
     SDL_RenderPresent(renderer);
     SDL_DestroyTexture(loadTexture);
 }
-
+//Ham xu ly su kien pause
 void Game::handlePauseEvent(){
     SDL_Event event;
     while(SDL_PollEvent(&event)){
@@ -135,12 +136,12 @@ void Game::handlePauseEvent(){
             case SDLK_SPACE:
                 Mix_PlayChannel(-1,confirm,0);
                 if(pauseSelection==0){
-                    gstate=prevState;
+                    gstate=prevState; //Tiep tuc
                     playMusic(prevMusic);
                 }
-                else if(pauseSelection==1) saveGame();
+                else if(pauseSelection==1) saveGame(); //Luu game
                 else if(pauseSelection==2){
-                        gstate=MENU;
+                        gstate=MENU; //Ve menu
                         playMusic(menuMusic);
                         break;
                 }
@@ -148,7 +149,7 @@ void Game::handlePauseEvent(){
         }
     }
 }
-
+//Ham ve man hinh pause
 void Game::renderPause(int pauseSelection){
     string pausescr="pause/";
     SDL_Texture* pauseTexture=IMG_LoadTexture(renderer,(pausescr+to_string(pauseSelection)+".jpg").c_str());
@@ -162,7 +163,7 @@ void Game::renderPause(int pauseSelection){
     SDL_RenderPresent(renderer);
     SDL_DestroyTexture(pauseTexture);
 }
-
+//Ham xu ly skien thua
 void Game::handleLoss(){
     SDL_Event event;
     while(SDL_PollEvent(&event)){
@@ -176,7 +177,7 @@ void Game::handleLoss(){
         }
     }
 }
-
+//Ham ve man hinh thua
 void Game::renderLoss(int loseSelection){
     string losescr="Lose/";
     SDL_Texture* loseTexture=IMG_LoadTexture(renderer,(losescr+to_string(loseSelection)+".jpg").c_str());
@@ -189,7 +190,7 @@ void Game::renderLoss(int loseSelection){
     SDL_RenderPresent(renderer);
     SDL_DestroyTexture(loseTexture);
 }
-
+//Ham xu ly skien win
 void Game::handleWin(){
     SDL_Event event;
     while(SDL_PollEvent(&event)){
@@ -203,7 +204,7 @@ void Game::handleWin(){
         }
     }
 }
-
+//Ham ve man hinh win
 void Game::renderWin(int winSelection){
     string winscr="Win/";
     SDL_Texture* winTexture=IMG_LoadTexture(renderer,(winscr+to_string(winSelection)+".jpg").c_str());
@@ -216,9 +217,8 @@ void Game::renderWin(int winSelection){
     SDL_RenderPresent(renderer);
     SDL_DestroyTexture(winTexture);
 }
-
+//Ham xu ly vong lap game
 void Game::run() {
-    std::cerr << "Starting game loop..." << std::endl;
     while (running) {
         if(gstate==MENU){
             handleMenuEvent();
@@ -247,21 +247,22 @@ void Game::run() {
             SDL_Delay(16);
         }
     }
-    std::cerr << "Game loop exited!" << std::endl;
 }
-
+//Ham ve
 void Game::render() {
 
-    SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
+    SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255); //Mau vien man hinh xam
     SDL_RenderClear(renderer);
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);//Lay mau den
+    //Ve man hinh mau den
     for (int i = 1; i < MAP_HEIGHT - 1; i++) {
         for (int j = 1; j < MAP_WIDTH - 1; j++) {
             SDL_Rect tile = { j * TITLE_SIZE, i * TITLE_SIZE, TITLE_SIZE, TITLE_SIZE };
             SDL_RenderFillRect(renderer, &tile);
         }
     }
+    //Ve tuong
     for(int i=0;i<walls.size();i++){
         if(walls[i].type==BRICK){
             SDL_Rect wallscr={1051,0,55,55};
@@ -284,6 +285,7 @@ void Game::render() {
 
     if (player.active) {
         SDL_Rect player1scr;
+        //Ve cac huong nguoi choi
         switch (player.direction) {
             case UP:    player1scr = {3 , 7, 55, 55}; break;
             case DOWN:  player1scr = {262, 3, 56, 55}; break;
@@ -293,7 +295,7 @@ void Game::render() {
         player.setSpriteSheet(spritesheet, player1scr);
         player.render(renderer);
     }
-    else if (player.explosionFrame >= 0) {
+    else if (player.explosionFrame >= 0) { //Ve nguoi choi phat no
         SDL_Rect explosionSrc = { 1058+(player.explosionFrame%3) * 58, 516, 58, 58 };
         SDL_Rect explosionDest = {player.x, player.y, TITLE_SIZE, TITLE_SIZE};
         SDL_RenderCopy(renderer, spritesheet, &explosionSrc, &explosionDest);
@@ -356,7 +358,7 @@ void Game::render() {
     }
     SDL_RenderPresent(renderer);
 }
-
+//Ham xu ly skien ow menu
 void Game::handleMenuEvent() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -382,10 +384,10 @@ void Game::handleMenuEvent() {
                         currentLevel=1;
                         loadLevel(currentLevel);
                         ifstream saveFile((gstate == MULTIPLAYER) ? "saves/multi.txt" : "saves/single.txt");
-                        if (saveFile && saveFile.peek() != EOF) {
+                        if (saveFile && saveFile.peek() != EOF) { //Neu co file saves trc do thi hien man hinh loadgame
                             saveFile.close();
                             prevState = gstate;
-                            gstate = LOADSCREEN;
+                            gstate = LOADSCREEN; //Man hinh loadgame
                         }
                         else{
                                 prevState=gstate;
@@ -400,9 +402,10 @@ void Game::handleMenuEvent() {
         }
     }
 }
-
+//Ham ve menu
 void Game::renderMenu(const int &menuSelection){
     string imagePath;
+    //Lay hinh anh menu tu file
     switch(menuSelection){
         case 0: imagePath="MenuImgs/Menu0.jpg";break;
         case 1: imagePath="MenuImgs/Menu1.jpg";break;
@@ -419,7 +422,9 @@ void Game::renderMenu(const int &menuSelection){
     SDL_RenderPresent(renderer);
     SDL_DestroyTexture(menuTexture);
 }
+//Ham tai level cho game
 void Game::loadLevel(int level){
+    //Xoa du lieu cu
     enemies.clear();
     walls.clear();
     player.bullets.clear();
@@ -427,13 +432,14 @@ void Game::loadLevel(int level){
     boss.bullets.clear();
     boss.active=false;
     boss.lazer.active=false;
+    //Tai map tu file
     string mapFile="maps/"+to_string(level)+".txt";
-    enemynumber=1+level;
-    generateWall(mapFile);
+    enemynumber=1+level; //So luong ke dich
+    generateWall(mapFile);//Khoi tao tuong tu file map
     spawnEnemyTank();
     player2.active = (prevState == MULTIPLAYER);
     if(currentLevel==3){
-        player=PlayerTank((MAP_WIDTH-18)*TITLE_SIZE,(MAP_HEIGHT-2)*TITLE_SIZE);
+        player=PlayerTank((MAP_WIDTH-18)*TITLE_SIZE,(MAP_HEIGHT-2)*TITLE_SIZE); //khoi tao vi tri
         player.active=true;
         if(player2.active){
             player2 = PlayerTank((MAP_WIDTH-17)*TITLE_SIZE, (MAP_HEIGHT-2)*TITLE_SIZE);
@@ -460,7 +466,7 @@ void Game::loadLevel(int level){
             boss.loadExplosionTexture(renderer);
     }
 }
-
+//Ham khoi tao tuong tu file
 void Game::generateWall(const string &mapFile){
     ifstream file(mapFile.c_str());
     if(!file){
@@ -486,21 +492,19 @@ void Game::generateWall(const string &mapFile){
         }
         row++;
     }
-
     file.close();
-    cerr << "Map loaded successfully, total walls: " << walls.size() << endl;
 }
-
+//Ham sinh ke dich
 void Game::spawnEnemyTank(){
-    enemies.clear();
+    enemies.clear(); //Xoa ke dich cu
     for(int i=0;i<enemynumber;i++){
         int ex,ey;
-        bool validPos=false;
+        bool validPos=false; //Vi tri hop ly
         while(!validPos){
             ex=(rand()%(MAP_WIDTH/2-2)+1)*TITLE_SIZE;
             ey=(rand()%(MAP_HEIGHT/2-2)+1)*TITLE_SIZE;
             if(currentLevel==3){
-                if(ex<280||ex>520){
+                if(ex<280||ex>520){ // tranh vi tri boss
                     validPos=true;
                 }
             }
@@ -515,10 +519,9 @@ void Game::spawnEnemyTank(){
         enemies.push_back(EnemyTank(ex,ey));
     }
 }
-
+//Ham luu game
 void Game::saveGame(){
-    cout << "Saving game - prevState: " << prevState << endl;
-    string filename = (prevState == MULTIPLAYER) ? "saves/multi.txt" : "saves/single.txt";
+    string filename = (prevState == MULTIPLAYER) ? "saves/multi.txt" : "saves/single.txt";  //Luu du lieu tuy thuoc che do
     ofstream saveFile(filename, ios::trunc);
     if (!saveFile) {
         cerr << "Error! Cannot save game to " << filename << endl;
@@ -542,11 +545,10 @@ void Game::saveGame(){
         saveFile << boss.health << " " << boss.active << endl;
     }
     saveFile.close();
-    cout<<"Game saved!"<<endl;
 }
-
+//Ham load game
 void Game::loadGame(){
-    string filename = (prevState == MULTIPLAYER) ? "saves/multi.txt" : "saves/single.txt";
+    string filename = (prevState == MULTIPLAYER) ? "saves/multi.txt" : "saves/single.txt";//load tuy che do
     ifstream loadFile(filename);
     if (!loadFile) {
         cerr << "Error! No save file found: " << filename << endl;
@@ -557,7 +559,7 @@ void Game::loadGame(){
     enemies.clear();
     int savedGstate;
     loadFile >> savedGstate;
-    gstate = static_cast<GameState>(savedGstate);
+    gstate = static_cast<GameState>(savedGstate);//chuyen ve dang int
 
     loadFile >> currentLevel;
 
@@ -640,7 +642,7 @@ void Game::update(){
             if (rand() % 100 < 3) {
                 boss.shoot();
             }
-            if(rand()%300<3){
+            if(rand()%200<3){
                 boss.shootLazer();
             }
         }
@@ -659,7 +661,7 @@ void Game::update(){
             Wall.active=false;
         }
     }
-    for(auto &enemy:enemies){
+    for(auto &enemy:enemies){ //Xu  ly va cham ke dich vs tuong
         for(auto &Bullet:enemy.bullets){
             for(auto &Wall:walls){
                 if(Wall.active&&Wall.type==BRICK&&SDL_HasIntersection(&Bullet.rect,&Wall.rect)){
@@ -678,12 +680,15 @@ void Game::update(){
             }
         }
     }
+    //Xoa ke dich khi phat no
     enemies.erase(remove_if(enemies.begin(), enemies.end(),
                         [](EnemyTank &e) { return e.explosionFrame == -1&&!e.active; }),
               enemies.end());
+    //Xoa tuong khi k hoat dong
     walls.erase(remove_if(walls.begin(), walls.end(),
                         [](Wall &e) { return !e.active; }),
               walls.end());
+    //Xu ly va cham 2 vien dan
     for(auto &enemy:enemies){
         for(auto &Bullet1:player.bullets){
             for(auto &Bullet2:enemy.bullets){
@@ -706,7 +711,7 @@ void Game::update(){
         }
     }
     if(player.active){
-        for(auto &Bullets:player.bullets){
+        for(auto &Bullets:player.bullets){ //VA cham dan vs tuong
             for(auto &Wall:walls){
                 if(Wall.active&&Wall.type==BRICK&&SDL_HasIntersection(&Bullets.rect,&Wall.rect)){
                     Wall.active=false;
@@ -723,7 +728,7 @@ void Game::update(){
                 }
             }
         }
-        for(auto &Bullet:player.bullets){
+        for(auto &Bullet:player.bullets){ //Va cham dan voi dich
             for(auto &enemy:enemies){
                 if(enemy.active&&SDL_HasIntersection(&Bullet.rect,&enemy.rect)){
                     Mix_PlayChannel(-1,explosionSound,0);
@@ -733,7 +738,7 @@ void Game::update(){
                 }
             }
         }
-        for(auto &enemy:enemies){
+        for(auto &enemy:enemies){//Va cham dan voi nguoi choi
             for(auto &Bullet:enemy.bullets){
                 if(SDL_HasIntersection(&Bullet.rect,&player.rect)){
                     Mix_PlayChannel(-1,deathSound,0);
@@ -743,13 +748,13 @@ void Game::update(){
                 }
             }
         }
-        if(boss.lazer.active&&boss.lazer.canCollide){
+        if(boss.lazer.active&&boss.lazer.canCollide){ //Lazer vs nguoi chs
             if(SDL_HasIntersection(&player.rect,&boss.lazer.rect)){
                 player.explosionFrame=0;
                 player.active=false;
             }
         }
-        for(auto &Bullet:boss.bullets){
+        for(auto &Bullet:boss.bullets){//Dan boss vs nguoi chs
             if(SDL_HasIntersection(&Bullet.rect,&player.rect)){
                 Bullet.active=false;
                 player.explosionFrame=0;
@@ -757,7 +762,7 @@ void Game::update(){
             }
         }
 
-        for (size_t i = 0; i < player.bullets.size(); i++) {
+        for (size_t i = 0; i < player.bullets.size(); i++) {//Dan nguoi chs vs boss
             if (boss.active&&SDL_HasIntersection(&player.bullets[i].rect, &boss.rect)) {
                 boss.health--;
                 player.bullets[i].active = false;
@@ -821,11 +826,11 @@ void Game::update(){
             }
         }
     }
-    if (boss.health <= 0 && boss.explosionFrame == -1&&boss.active) {
+    if (boss.health <= 0 && boss.explosionFrame == -1&&boss.active) { //Boss phat no
         boss.explosionFrame = 0;
         boss.active = false;
     }
-    if(!player2.active&&!player.active){
+    if(!player2.active&&!player.active){//dieu kien thua
         gstate=LOSS;
         playMusic(loseSound);
         return;
@@ -836,4 +841,5 @@ Game::~Game() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+    boss.~Boss();
 }

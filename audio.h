@@ -2,7 +2,7 @@
 #define AUDIO_H_INCLUDED
 
 #include <SDL_mixer.h>
-
+//Khoi tao nhac
 extern Mix_Music* menuMusic;
 extern Mix_Music* level1Music;
 extern Mix_Music* level2Music;
