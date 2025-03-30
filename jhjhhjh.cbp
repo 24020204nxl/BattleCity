@@ -56,17 +56,13 @@
 		<Unit filename="assets.png">
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="audio.cpp">
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="audio.h">
-			<Option target="Debug" />
-		</Unit>
+		<Unit filename="audio.cpp" />
+		<Unit filename="audio.h" />
 		<Unit filename="bullets.cpp" />
 		<Unit filename="bullets.h" />
 		<Unit filename="checkvar.c">
 			<Option compilerVar="CC" />
-			<Option target="Release" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="constants.h" />
 		<Unit filename="game.cpp" />

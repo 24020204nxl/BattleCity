@@ -387,6 +387,11 @@ void Game::handleMenuEvent() {
                             prevState = gstate;
                             gstate = LOADSCREEN;
                         }
+                        else{
+                                prevState=gstate;
+                                currentLevel=1;
+                                loadLevel(currentLevel);
+                        }
                     } else {
                         running = false;
                     }
